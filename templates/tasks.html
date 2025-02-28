@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form method="POST">
+{#        {% csrf_token %}#}
+        {{ form.as_p }}
+        <button type="submit">Thêm công việc</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <a href="{% url 'toggle_task' task.id %}" style="text-decoration: none;">
+                    {% if task.completed %}
+                        ✅ <s>{{ task.title }}</s>
+                    {% else %}
+                        ⬜ {{ task.title }}
+                    {% endif %}
+                </a>
+                <a href="{% url 'delete_task' task.id %}" style="color: red;">❌</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
