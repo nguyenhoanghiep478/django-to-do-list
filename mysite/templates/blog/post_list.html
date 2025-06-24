@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Danh sách bài viết{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">📝 Bài viết mới nhất</h2>
+
+  <!-- Form tìm kiếm -->
+  <form method="get" class="input-group mb-4">
+    <input type="text" name="q" class="form-control" placeholder="Tìm bài viết..." value="{{ request.GET.q }}">
+    <button type="submit" class="btn btn-outline-primary">Tìm</button>
+  </form>
+
+  {% for post in posts %}
+    <div class="card mb-4 shadow-sm">
+      {% if post.image %}
+        <img src="{{ post.image.url }}" class="card-img-top" alt="Ảnh bài viết">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text text-muted">
+          Đăng bởi <strong>{{ post.author.username }}</strong> • {{ post.created_at|date:"d/m/Y" }}
+        </p>
+        <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+        <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-primary">Đọc tiếp</a>
+      </div>
+    </div>
+  {% empty %}
+    <p>Không có bài viết nào.</p>
+  {% endfor %}
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+    <nav aria-label="Phân trang">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">Trước</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Trước</span></li>
+        {% endif %}
+
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">Tiếp</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Tiếp</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

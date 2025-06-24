@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Danh sách bài viết</h1>
+    {% for post in posts %}
+        <div>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content|truncatewords:30 }}</p>
+            <p><i>Đăng lúc: {{ post.created_at }}</i></p>
+        </div>
+        <hr>
+    {% endfor %}
+</body>
+</html>

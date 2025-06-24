@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Hồ sơ người dùng{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">👤 Hồ sơ cá nhân</h2>
+
+  <div class="row">
+    <div class="col-md-4 text-center">
+      {% if user_profile.avatar %}
+        <img src="{{ user_profile.avatar.url }}" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+      {% else %}
+        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+          <strong>{{ user_profile.username|slice:":1" }}</strong>
+        </div>
+      {% endif %}
+      <h4>{{ user_profile.username }}</h4>
+      <p class="text-muted">{{ user_profile.email }}</p>
+    </div>
+
+    <div class="col-md-8">
+      <div class="mb-3">
+        <strong>Tiểu sử:</strong>
+        <p>{{ user_profile.bio|default:"(Chưa cập nhật)" }}</p>
+      </div>
+
+      <div class="mb-3">
+        <strong>Ngày sinh:</strong>
+        <p>{{ user_profile.date_of_birth|date:"d/m/Y" }}</p>
+      </div>
+
+      {% if user_profile == request.user %}
+        <a href="#" class="btn btn-primary">Sửa hồ sơ</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

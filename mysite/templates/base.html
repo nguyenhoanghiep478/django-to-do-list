@@ -1,0 +1,21 @@
+
+
+<body>
+<nav>
+  {% if user.is_authenticated %}
+    Xin chào, {{ user.username }} |
+    <a href="{% url 'logout' %}">Đăng xuất</a>
+    <a href="{% url 'profile' user.username %}">Hồ sơ</a>
+  {% else %}
+    <a href="{% url 'login' %}">Đăng nhập</a>
+    <a href="{% url 'register' %}">Đăng ký</a>
+  {% endif %}
+</nav>
+  <div class="container mt-4">
+    {% block content %}
+
+    {% endblock %}
+  </div>
+
+  <!-- Footer -->
+</body>
