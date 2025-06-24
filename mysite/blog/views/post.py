@@ -1,7 +1,7 @@
 from django.views.generic import ListView,DetailView,CreateView,DeleteView, UpdateView
-from ..models import Post
+from ..models import Post,Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from ..forms import PostForm
+from ..forms import PostForm,CommentForm
 from django.urls import reverse_lazy
 from accounts.models import CustomUser
 from django.shortcuts import get_object_or_404
@@ -22,6 +22,18 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()
+
+        # Lấy bình luận liên quan đến bài viết
+        context['comments'] = Comment.objects.filter(post=post,
+                                                     is_approved=True)
+
+        # Form gửi bình luận
+        context['comment_form'] = CommentForm()
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post

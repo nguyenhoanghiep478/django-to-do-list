@@ -4,7 +4,10 @@
 <nav>
   {% if user.is_authenticated %}
     Xin chào, {{ user.username }} |
-    <a href="{% url 'logout' %}">Đăng xuất</a>
+       <form action="{% url 'logout' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Đăng xuất</button>
+    </form>
     <a href="{% url 'profile' user.username %}">Hồ sơ</a>
   {% else %}
     <a href="{% url 'login' %}">Đăng nhập</a>
